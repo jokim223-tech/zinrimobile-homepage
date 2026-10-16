@@ -511,8 +511,6 @@ a {
 }
 
 .faq-answer {
-    display: none;
-
     padding: 0 22px 22px;
 
     color: #666666;
@@ -739,3 +737,15 @@ a {
 html {
     scroll-behavior: smooth;
 }
+/* 선불 전용 안내와 접근성 */
+[hidden] { display: none !important; }
+.skip-link { position: absolute; top: -100px; left: 16px; padding: 12px; background: white; z-index: 10; }
+.skip-link:focus { top: 8px; }
+a:focus-visible, button:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 4px; }
+.opening-note, .plan-note { color: #475569; line-height: 1.8; font-size: 15px; }
+.opening-note { margin-bottom: 22px; }
+.plan-note { max-width: 900px; margin: 0 auto 32px; }
+.hero-buttons a { text-align: center; }
+section[id] { scroll-margin-top: 24px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media (max-width: 360px) { .hero h1 { font-size: 29px; } .hero-buttons { flex-direction: column; } }
