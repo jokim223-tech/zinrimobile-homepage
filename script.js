@@ -29,3 +29,14 @@ if (chargeForm) {
   });
 }
 
+
+document.querySelectorAll('[data-network-choice]').forEach(link => {
+  link.addEventListener('click', () => {
+    const network = link.dataset.networkChoice;
+    const plans = document.getElementById('plans');
+    if (!plans) return;
+    const candidates = [...plans.querySelectorAll('button, [role="tab"], select, input[type="radio"]')];
+    const matching = candidates.find(el => (el.textContent || el.value || '').trim().toUpperCase().includes(network));
+    if (matching) { if (matching.tagName === 'SELECT') { const opt = [...matching.options].find(o => o.text.toUpperCase().includes(network)); if (opt) { matching.value=opt.value;matching.dispatchEvent(new Event('change',{bubbles:true})); } } else matching.click(); }
+  });
+});
