@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jokim223-tech.github.io/zinrimobile-homepage/sitemap.xml
