@@ -30,13 +30,21 @@ if (chargeForm) {
 }
 
 
-document.querySelectorAll('[data-network-choice]').forEach(link => {
-  link.addEventListener('click', () => {
-    const network = link.dataset.networkChoice;
-    const plans = document.getElementById('plans');
-    if (!plans) return;
-    const candidates = [...plans.querySelectorAll('button, [role="tab"], select, input[type="radio"]')];
-    const matching = candidates.find(el => (el.textContent || el.value || '').trim().toUpperCase().includes(network));
-    if (matching) { if (matching.tagName === 'SELECT') { const opt = [...matching.options].find(o => o.text.toUpperCase().includes(network)); if (opt) { matching.value=opt.value;matching.dispatchEvent(new Event('change',{bubbles:true})); } } else matching.click(); }
-  });
+/* Click measurement without storing personal identifiers.
+   To enable GA4, add the site's verified G- measurement ID to the page.
+   Events are sent only when a GA4 gtag integration is actually configured. */
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('a[href]');
+  if (!link) return;
+  let action = null;
+  try {
+    const url = new URL(link.href, location.href);
+    if (url.hostname === 'pf.kakao.com' && url.pathname.startsWith('/_waaAX/')) action = 'kakao_consult_click';
+    else if (url.hostname === 'www.n-telecom.co.kr' && url.pathname.includes('/selfopen_explain.aspx')) action = 'official_open_click';
+    else if (url.protocol === 'tel:') action = 'phone_call_click';
+  } catch (_) { return; }
+  if (!action) return;
+  if (typeof window.gtag === 'function') {
+    window.gtag('event', action, { event_category: 'conversion', page_path: location.pathname });
+  }
 });
